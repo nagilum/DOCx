@@ -6,8 +6,25 @@
  *
  * Maintainer: Stian Hanger (pdnagilum@gmail.com)
  *
- * .docx files (Microsoft Word 2007 and newer) and basically a zipped archive
- * of .xml files which holds different contents.
+ * .docx files (Microsoft Word 2007 and newer) and basically a zipped archive of
+ * .xml files which holds different contents. If you unzip a .docx file you will
+ * get a lot of files, among them word/document.xml, word/header.xml, and
+ * word/footer.xml. For some reason Word adds multiple documents for each section.
+ * So there might be 3 footer files, named: word/footer1.xml, word/footer2.xml,
+ * and word/footer3.xml. This library takes that into account when manipulating
+ * the variables.
+ *
+ * Functions of the library:
+ *
+ * * cleanTagVars - Cleans out the excessive '${' and '}' tags in the document.
+ * * close - Resets the class for a new run.
+ * * load - Loads a .docx file into memory and unzips it.
+ * * save - Saves the temporary buffer to disk.
+ * * setValue - Does a global search and replace with the given values.
+ * * setValues - Does a global search and replace with an array of values.
+ * * setValueDocument - Does a search and replace in the 'document' part of the file.
+ * * setValueFooter - Does a search and replace in the 'footer' part of the file.
+ * * setValueHeader - Does a search and replace in the 'header' part of the file.
  */
 
 /**
@@ -39,7 +56,7 @@ class DOCx {
    */
   public function __construct($filepath = NULL) {
     if ($filepath !== NULL) {
-      $this->loadFile($filepath);
+      $this->load($filepath);
     }
   }
 
@@ -58,7 +75,7 @@ class DOCx {
   }
 
   /**
-   * Do some variable clean-up.
+   * Resets the class for a new run.
    */
   public function close() {
     $this->_filename = NULL;
@@ -101,7 +118,7 @@ class DOCx {
    * @param string $filename
    *   The .docx file to load.
    */
-  public function loadFile($filepath) {
+  public function load($filepath) {
     $this->_filename = (strpos($filepath, '/') !== FALSE ? substr($filepath, strrpos($filepath, '/') + 1) : $filepath);
     $this->_filepath = $filepath;
 
@@ -202,7 +219,7 @@ class DOCx {
   }
 
   /**
-   * Replaces the given tag with the given value.
+   * Does a global search and replace with the given values.
    *
    * @param string $search
    *   The tag to search for, represented as ${TAGNAME} in the file.
@@ -219,7 +236,7 @@ class DOCx {
   }
 
   /**
-   * Replaces all instances of tags with the given values.
+   * Does a global search and replace with an array of values.
    *
    * @param array $values
    *   A keyed array with search and replaces values.
@@ -234,7 +251,7 @@ class DOCx {
   }
 
   /**
-   * Replaces the given tag with the given value in the main document.
+   * Does a search and replace in the 'document' part of the file.
    *
    * @param string $search
    *   The tag to search for, represented as ${TAGNAME} in the file.
@@ -249,7 +266,7 @@ class DOCx {
   }
 
   /**
-   * Replaces the given tag with the given value in the footer.
+   * Does a search and replace in the 'footer' part of the file.
    *
    * @param string $search
    *   The tag to search for, represented as ${TAGNAME} in the file.
@@ -264,7 +281,7 @@ class DOCx {
   }
 
   /**
-   * Replaces the given tag with the given value in the header.
+   * Does a search and replace in the 'header' part of the file.
    *
    * @param string $search
    *   The tag to search for, represented as ${TAGNAME} in the file.
@@ -279,7 +296,7 @@ class DOCx {
   }
 
   /**
-   * Replaces the given tag with the given value in the given array.
+   * Does a search and replace in the given array.
    *
    * @param array $array
    *   The DOCx array to modify.
