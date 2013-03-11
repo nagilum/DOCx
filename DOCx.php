@@ -6,7 +6,7 @@
  *
  * Maintainer: Stian Hanger (pdnagilum@gmail.com)
  *
- * .docx files (Microsoft Word 2007 and newer) and basically a zipped archive of
+ * .docx files (Microsoft Word 2007 and newer) are basically a zipped archive of
  * .xml files which holds different contents. If you unzip a .docx file you will
  * get a lot of files, among them word/document.xml, word/header.xml, and
  * word/footer.xml. For some reason Word adds multiple documents for each section.
