@@ -320,6 +320,11 @@ class DOCx {
       $cleanSearchTag = ($validateSearchVar ? substr($search, 2, strlen($search) - 3) : $search);
     }
 
+    // Replace all instances of word-related '&' char with ampersand.
+    $replace = str_replace(' & ', ' &amp; ', $replace);
+    $replace = str_replace('& ' , ' &amp; ', $replace);
+    $replace = str_replace(' &' , ' &amp; ', $replace);
+
     if (count($array)) {
       for ($i = 0; $i < count($array); $i++) {
         if (count($array[$i]['xml'])) {
